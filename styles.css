@@ -1,0 +1,306 @@
+/* Concept 05.4: the 05.3 hero, then 05.2's ruled three-column page with everything set in the middle column, so text,
+   photographs and figures share one width, like a well-set article. Concept 03's header, footer and scroll motion.
+   Tokens come from ds/tokens.css; only concept-specific values live here. */
+
+:root {
+  --pad: clamp(1.25rem, .6rem + 3vw, 3rem);
+  --top-h: 84px;
+  --cell: clamp(1.25rem, 2.6vw, 2.75rem);
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --rule: color-mix(in srgb, var(--ink) 13%, transparent);
+  --bg: #ffffff;
+  --navy-deep: #22334a;
+  --navy-night: #1e2d42;
+  --wide: 1240px;
+  --read: 40rem;
+}
+
+/* ---------- Base ---------- */
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--top-h); }
+body { background: var(--bg); color: var(--foreground); font-family: var(--font-body); font-size: 1rem; line-height: 1.65; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+h1, h2, h3, p, ol, ul, dl, dd, figure, blockquote { margin: 0; }
+ol, ul { padding: 0; list-style: none; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+::selection { background: var(--mint); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; border-radius: 2px; }
+h1, h2, h3, blockquote { font-family: var(--font-heading); font-weight: 400; font-optical-sizing: auto; text-wrap: balance; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.skip { position: absolute; left: 1rem; top: -100px; z-index: 100; padding: .75rem 1rem; background: var(--navy); color: var(--white); border-radius: var(--radius); }
+.skip:focus { top: 1rem; }
+.eyebrow { font-size: var(--text-eyebrow); font-weight: 500; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; }
+.h2 { font-size: clamp(2.25rem, 1.2rem + 2.8vw, 3.75rem); line-height: 1.04; letter-spacing: -.028em; }
+.lead { font-size: var(--text-lead); line-height: 1.55; letter-spacing: -.006em; }
+.body { color: #4a4a4a; }
+
+/* ---------- Controls ---------- */
+.link { display: inline-flex; align-items: center; gap: .55em; padding-bottom: 3px; font-size: .9375rem; font-weight: 500; color: var(--navy); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, currentColor 30%, transparent); transition: border-color .3s var(--ease); }
+.link svg { width: 14px; height: 14px; transition: transform .4s var(--ease-out); }
+.link:hover { border-color: currentColor; }
+.link:hover svg { transform: translateX(4px); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: .6em; min-height: 44px; padding: 0 1.25rem; border: 1px solid transparent; border-radius: var(--radius); font: 500 .875rem/1 var(--font-body); text-decoration: none; cursor: pointer; transition: background-color .25s var(--ease), transform .25s var(--ease-out); }
+.btn svg { width: 14px; height: 14px; transition: transform .4s var(--ease-out); }
+.btn:hover svg { transform: translateX(4px); }
+.btn:active { transform: scale(.97); }
+.btn--primary { background: var(--navy); color: var(--white); }
+.btn--primary:hover { background: #34506f; }
+.btn--light { background: var(--white); color: var(--navy); }
+.btn--light:hover { background: #e9eef5; }
+.btn--outline { border-color: var(--ink); color: var(--ink); }
+.btn--outline:hover { background: var(--muted); }
+.btn--sm { min-height: 40px; padding: 0 1.1rem; font-size: .8125rem; }
+.btn--lg { min-height: 52px; padding: 0 1.5rem; font-size: .9375rem; }
+
+/* ---------- Header (concept 03, larger lock-up) ---------- */
+.top { position: fixed; inset: 0 0 auto; z-index: 50; height: var(--top-h); padding: 0 var(--pad); display: flex; align-items: center; justify-content: space-between; background: color-mix(in srgb, var(--bg) 88%, transparent); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); border-bottom: 1px solid var(--rule); }
+.lockup { --h: 44px; display: inline-flex; align-items: center; gap: calc(var(--h) * .28); color: var(--ink); text-decoration: none; }
+.lockup__mark { height: var(--h); width: auto; flex: none; }
+.lockup span { font-family: var(--font-heading); font-weight: 500; font-size: calc(var(--h) * .31); line-height: 1.12; white-space: nowrap; }
+.top__actions { display: flex; align-items: center; gap: .5rem; }
+.top__menu { width: 44px; height: 44px; border: 0; border-radius: 50%; background: transparent; cursor: pointer; display: grid; place-items: center; transition: background-color .25s var(--ease); }
+.top__menu:hover { background: var(--muted); }
+.dots { position: relative; width: 18px; height: 8px; }
+.dots i { position: absolute; left: 0; width: 100%; height: 1.5px; border-radius: 1px; background: var(--ink); transition: transform .45s var(--ease-out), top .45s var(--ease-out); }
+.dots i:first-child { top: 0; } .dots i:last-child { top: 6.5px; }
+.top__menu[aria-expanded='true'] .dots i:first-child { top: 3.25px; transform: rotate(45deg); }
+.top__menu[aria-expanded='true'] .dots i:last-child { top: 3.25px; transform: rotate(-45deg); }
+.menu { position: absolute; top: calc(var(--top-h) - 6px); right: var(--pad); width: min(280px, calc(100vw - 2 * var(--pad))); display: grid; padding: .5rem; border-radius: 18px; background: var(--white); box-shadow: 0 1px 2px rgba(44, 44, 44, .06), 0 20px 50px -12px rgba(30, 45, 66, .25); transform-origin: top right; }
+.menu a { padding: .75rem 1rem; border-radius: 12px; font-family: var(--font-heading); font-size: 1.25rem; text-decoration: none; transition: background-color .2s var(--ease); }
+.menu a:hover { background: var(--muted); }
+.menu[hidden] { display: none; }
+.menu.is-open { animation: pop .45s var(--ease-out) both; }
+@keyframes pop { from { opacity: 0; transform: scale(.94) translateY(-6px); } }
+.top__progress { position: absolute; left: 0; bottom: -1px; height: 1px; width: 100%; background: var(--navy); transform: scaleX(0); transform-origin: left; }
+
+/* ---------- Hero (05.3 layout; title at 05.1's weight, the eyebrow directly above it) ---------- */
+.hero { display: grid; grid-template-columns: 1fr 1fr; height: 100svh; min-height: 640px; padding-top: var(--top-h); }
+.hero__text { display: grid; grid-template-rows: 1fr auto; padding: clamp(2rem, 6svh, 4rem) clamp(3rem, 8vw, 9rem) clamp(1.5rem, 4svh, 2.5rem) var(--pad); }
+.hero__body { align-self: end; padding-bottom: clamp(2rem, 6svh, 4rem); }
+.hero__body > .eyebrow { margin-bottom: clamp(1rem, 2.4svh, 1.5rem); color: var(--muted-foreground); }
+.hero__title { font-size: min(clamp(2.5rem, .9rem + 3.3vw, 4.75rem), 7.4svh); font-weight: 400; line-height: 1; letter-spacing: -.035em; }
+.t-line { display: block; overflow: hidden; padding-bottom: .1em; margin-bottom: -.1em; }
+.t-line > span { display: inline-block; white-space: nowrap; }
+.hero__under { margin-top: clamp(1.5rem, 4svh, 2.5rem); display: grid; gap: 1.5rem; }
+.hero__lead { max-width: 32rem; color: var(--muted-foreground); }
+.hero__actions { display: flex; flex-wrap: wrap; gap: .625rem; }
+.hero__index { display: flex; flex-wrap: wrap; gap: .5rem 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+.hero__index a { display: flex; gap: .6rem; align-items: baseline; font-size: var(--text-eyebrow); font-weight: 500; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; color: var(--muted-foreground); text-decoration: none; transition: color .25s var(--ease); }
+.hero__index a span { color: var(--ink); font-variant-numeric: tabular-nums; }
+.hero__index a:hover { color: var(--navy); }
+/* The photograph runs to the edges of the screen (as in 05.1) */
+.hero__side { padding: 0; }
+.hero__art { position: relative; height: 100%; overflow: hidden; background: #3b2f22; color: var(--white); isolation: isolate; }
+.hero__art img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; transform: scale(calc(1.05 + var(--hp, 0) * .1)); }
+/* The Navy wash rising from the bottom (as in 05.1) */
+.hero__art::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(30, 45, 66, .78), rgba(30, 45, 66, .2) 45%, rgba(30, 45, 66, 0) 70%), linear-gradient(to bottom, rgba(30, 45, 66, .3), rgba(30, 45, 66, 0) 28%); }
+.hero__mark { position: absolute; z-index: 1; top: clamp(1.5rem, 5svh, 3rem); left: clamp(1.5rem, 3.5vw, 3rem); width: clamp(42px, 3.8vw, 60px); height: auto; }
+.hero__shape { position: absolute; z-index: 1; right: -24%; bottom: -22%; width: 74%; height: auto; opacity: .22; mix-blend-mode: screen; transform: translateY(calc(var(--hp, 0) * -14%)); }
+.hero__caption { position: absolute; z-index: 1; left: clamp(1.5rem, 3.5vw, 3rem); bottom: clamp(1.5rem, 5svh, 3rem); padding-top: 1rem; }
+.hero__caption::before { content: ''; position: absolute; top: 0; left: 0; width: 7rem; height: 1px; background: rgba(255, 255, 255, .7); }
+.hero__scroll { position: absolute; z-index: 1; right: clamp(1rem, 2vw, 1.5rem); bottom: clamp(1rem, 2svh, 1.5rem); display: inline-flex; align-items: center; gap: .5rem; min-height: 40px; padding: 0 1.1rem; border-radius: 999px; background: var(--white); color: var(--ink); text-decoration: none; font-size: var(--text-eyebrow); font-weight: 500; letter-spacing: var(--tracking-eyebrow); text-transform: uppercase; }
+.hero__scroll svg { width: 13px; height: 13px; transition: transform .4s var(--ease-out); }
+.hero__scroll:hover svg { transform: translateY(3px); }
+
+.js .t-line > span { transform: translateY(105%); }
+.js .fade-in { opacity: 0; }
+.js .hero__art { clip-path: inset(100% 0 0 0); }
+.is-loaded .t-line > span { transform: none; transition: transform 1.3s var(--ease-out) .2s; }
+.is-loaded .t-line:nth-child(2) > span { transition-delay: .28s; }
+.is-loaded .t-line:nth-child(3) > span { transition-delay: .36s; }
+.is-loaded .fade-in { opacity: 1; transition: opacity 1.2s var(--ease) .7s; }
+.is-loaded .hero__art { clip-path: inset(0); transition: clip-path 1.5s cubic-bezier(.7, 0, .2, 1); }
+
+/* ---------- 01 The Challenge (05.1 layout) ---------- */
+.chapter { max-width: calc(var(--wide) + 2 * var(--pad)); margin: 0 auto; padding: clamp(8rem, 4rem + 11vw, 15rem) var(--pad); }
+.chapter__head { display: grid; gap: 1.75rem; max-width: 60rem; }
+.chapter__num { font-size: .8125rem; font-weight: 500; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.h-display { font-size: clamp(2.5rem, 1.3rem + 4.2vw, 5.25rem); line-height: 1.02; letter-spacing: -.03em; }
+.read { max-width: var(--read); margin: clamp(4rem, 8vw, 7rem) 0 0 auto; display: grid; gap: 1.5rem; justify-items: start; }
+.read .link { margin-top: 1rem; }
+
+/* ---------- The frame (05.2): three columns, unruled, everything in the middle one ---------- */
+.frame { position: relative; display: grid; border-top: 1px solid var(--rule); }
+.row { display: grid; grid-template-columns: 1fr 1.6fr 1fr; padding-block: clamp(6rem, 3rem + 8vw, 11rem); }
+.row + .row { border-top: 1px solid var(--rule); }
+.row__main { grid-column: 2; padding: 0 var(--cell); display: grid; gap: 1.5rem; justify-items: start; align-content: start; }
+.row__main > * { width: 100%; }
+.row__main > .link { width: auto; margin-top: .75rem; }
+.label { display: flex; gap: 1rem; align-items: baseline; font-family: var(--font-heading); font-size: 1.25rem; }
+.label span { font-family: var(--font-body); font-size: .75rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+.row__main .h2 { margin-bottom: 1rem; }
+
+/* Pictures and figures take the column's width, never more */
+.plate { position: relative; overflow: hidden; background: #ebe9e4; }
+.plate img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.6s var(--ease-out); }
+.plate--col { aspect-ratio: 3 / 2; margin-block: 1rem; }
+.plate--col img { transform: scale(calc(1.12 - var(--sp, 0) * .12)); transition: none; }
+
+/* Evolution: the photograph cropped to half its height about the middle, its lower part falling to black under a white
+   caption and the link, with the logo motion (concept 06) in the top-right corner, laid over the picture so it shows through (light added at half strength) and
+   scrubbed by the scroll; the static mark fills the same middle 56% of its box */
+.evo { aspect-ratio: 2 / 1; margin-block: 1rem; color: #fff; }
+.evo img { object-position: 50% 50%; }
+.evo::after { content: ''; position: absolute; inset: auto 0 0; height: 75%; background: linear-gradient(to bottom, rgb(0 0 0 / 0), rgb(0 0 0 / .5) 40%, rgb(0 0 0 / .92)); pointer-events: none; }
+.evo__mark { position: absolute; z-index: 2; top: clamp(.25rem, 1vw, .75rem); right: clamp(.25rem, 1vw, .75rem); width: clamp(80px, 18%, 132px); aspect-ratio: 1; mix-blend-mode: plus-lighter; opacity: .5; }
+.spin__mark { position: absolute; inset: 22%; width: 56%; height: 56%; color: #fff; }
+.evo__cap { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem 2rem; padding: clamp(1.25rem, 2.5vw, 2rem); }
+.evo__cap > span { max-width: 36ch; font-family: var(--font-heading); font-size: clamp(1rem, .85rem + .4vw, 1.25rem); line-height: 1.4; text-wrap: pretty; }
+.evo__link { flex: none; color: #fff; }
+
+/* The movement's figure: navy orbits drawn in full round one solid navy centre, three Coral bodies turning on them */
+.poster { margin: 0; }
+.poster svg { display: block; width: 100%; height: auto; overflow: visible; }
+.o { fill: none; stroke: var(--navy); stroke-width: 1.2; stroke-dasharray: 1; stroke-dashoffset: calc(1 - var(--draw-o, 0)); }
+.orbits .o { --draw-o: clamp(0, calc(var(--op, 0) * 1.6 - var(--i) * .1), 1); }
+.b { cx: 320px; cy: 260px; fill: var(--coral); transform-box: view-box; transform-origin: 320px 260px; transform: rotate(calc(var(--a) + var(--spinb, 0deg) + var(--zr, 0deg))) translateX(var(--r)); opacity: var(--op, 0); }
+.bodies .b:nth-child(1) { animation: orbitb 40s linear infinite; }
+.bodies .b:nth-child(2) { animation: orbitb 70s linear infinite reverse; }
+.bodies .b:nth-child(3) { animation: orbitb 110s linear infinite; }
+@property --spinb { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes orbitb { to { --spinb: 360deg; } }
+.core { fill: var(--navy); transform-box: fill-box; transform-origin: center; transform: scale(calc(.4 + var(--op, 0) * .6)); }
+
+/* First Principles and First Values: a definition panel set right after the sentence that names it */
+.define { margin-block: 1rem; display: grid; gap: 1.1rem; justify-items: start; padding: clamp(1.75rem, 4vw, 3rem); background: #eef2f7; }
+.define__mark { width: 28px; height: auto; color: var(--navy); margin-bottom: .5rem; }
+.define h3 { font-size: clamp(1.625rem, 1.1rem + 1.2vw, 2.25rem); line-height: 1.08; letter-spacing: -.02em; }
+.define__lead { font-family: var(--font-heading); font-size: clamp(1.1875rem, 1rem + .5vw, 1.4375rem); line-height: 1.42; color: var(--ink); }
+.define p:not(.define__lead) { color: #4a4a4a; font-size: .9375rem; }
+.define .link { margin-top: .5rem; }
+
+.w { transition: opacity .4s var(--ease); }
+.js [data-words] .w { opacity: .18; }
+.js [data-words] .w.on { opacity: 1; }
+.js .reveal { opacity: 0; transform: translateY(16px); transition: opacity 1s var(--ease), transform 1.2s var(--ease-out); }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+/* ---------- The question (05.2): plates pass sideways, all one proportion ---------- */
+.pan { position: relative; height: 560svh; }
+.pan__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; display: grid; grid-template-columns: max(320px, calc(100% / 3.6)) 1fr; align-items: center; padding-top: var(--top-h); border-top: 1px solid var(--rule); }
+.pan__text { position: relative; z-index: 1; align-self: stretch; display: grid; align-content: center; gap: 2.5rem; padding: 0 var(--cell) 0 var(--pad); background: var(--bg); border-right: 1px solid color-mix(in srgb, var(--ink) calc(13% * var(--to, 1)), transparent); }
+/* As the School of Athens grows, the quote and its rule fade; the white behind them stays, so the plates that passed under it stay hidden */
+.pan__text > * { opacity: var(--to, 1); }
+.pan__quote { font-size: clamp(1.875rem, .9rem + 1.8vw, 2.75rem); font-style: italic; line-height: 1.06; letter-spacing: -.02em; }
+.pan__qs { display: grid; gap: 1rem; font-size: 1rem; color: #4a4a4a; }
+.pan__track { position: relative; display: flex; align-items: center; gap: clamp(1.25rem, 2.4vw, 2.5rem); padding-left: clamp(2rem, 5vw, 5rem); transform: translateX(var(--tx, 0px)); will-change: transform; }
+.pan__track .plate { flex: none; height: min(62svh, 560px); aspect-ratio: 4 / 5; }
+.pan__track .plate:hover img { transform: scale(1.03); }
+/* The School of Athens, lifted out of the track at the centre and grown to the full screen */
+.pan__full { position: absolute; z-index: 3; left: var(--fl, 0px); top: var(--ft, 0px); width: var(--fw, 0px); height: var(--fh, 0px); overflow: hidden; visibility: hidden; background: #3b2f22; }
+.pan__full img { width: 100%; height: 100%; object-fit: cover; }
+.pan.is-lifted .pan__full { visibility: visible; }
+.pan.is-lifted [data-centre] { visibility: hidden; }
+
+/* ---------- The portal: the orbits, then a dive into their navy centre, then the invitation in white ---------- */
+/* Without motion: the figure in the column, then the invitation on a navy band */
+.portal { --fig: min(calc(100vw - 2 * var(--pad)), 34rem); }
+.portal__stage { display: grid; justify-items: center; }
+.portal .poster { width: var(--fig); margin-block: clamp(2rem, 6vw, 5rem) clamp(5rem, 10vw, 8rem); }
+.portal__field { display: none; }
+.close { width: 100%; padding: clamp(6rem, 4rem + 8vw, 11rem) var(--pad); display: grid; justify-items: center; align-content: center; gap: 2rem; text-align: center; background: var(--navy); color: var(--white); }
+.close__mark { width: 44px; height: auto; color: var(--white); }
+.close__text { max-width: 24ch; font-family: var(--font-heading); font-size: clamp(1.875rem, 1.1rem + 2.6vw, 3.5rem); line-height: 1.1; letter-spacing: -.02em; text-wrap: balance; }
+
+/* With motion: one pinned screen. The figure sits in the middle at the column's width; scrolling on, the navy field opens from the
+   centre dot (a circle clip, so it stays crisp at any size) while the orbits rush outward past the viewer and fade; then the
+   invitation rises on the navy. main.js sets --cx/--cy/--cr (the circle), --zs (orbit scale), --zo (orbit opacity), --zr (extra
+   turn of the bodies) and --c1..--c3 (the invitation, in three steps). */
+@media (prefers-reduced-motion: no-preference) {
+  .js .portal { position: relative; height: 420svh; }
+  .js .portal__stage { position: sticky; top: 0; height: 100svh; overflow: hidden; place-items: center; padding-top: var(--top-h); }
+  .js .portal .poster { --fig: min(calc(100vw * 1.6 / 3.6 - 2 * var(--cell)), calc(100svh - var(--top-h) - 4rem)); width: var(--fig); margin: 0; transform-origin: 50% 50%; transform: scale(var(--zs, 1)); opacity: var(--zo, 1); }
+  .js .portal.is-deep .poster { visibility: hidden; }
+  .js .portal__field { display: block; position: absolute; inset: 0; background: var(--navy); clip-path: circle(var(--cr, 0px) at var(--cx, 50%) var(--cy, 50%)); pointer-events: none; }
+  .js .close { position: absolute; inset: var(--top-h) 0 0; background: none; pointer-events: none; }
+  .js .portal.is-open .close { pointer-events: auto; }
+  .js .close > * { opacity: var(--c, 0); transform: translateY(calc((1 - var(--c, 0)) * 28px)); }
+  .js .close > :nth-child(1) { --c: var(--c1); }
+  .js .close > :nth-child(2) { --c: var(--c2); }
+  .js .close > :nth-child(3) { --c: var(--c3); }
+  .js .close:focus-within > * { --c: 1; }
+}
+@media (prefers-reduced-motion: no-preference) and (max-width: 1023px) {
+  .js .portal .poster { --fig: min(calc(100vw - 2 * var(--pad)), 34rem, calc(100svh - var(--top-h) - 4rem)); }
+}
+
+/* ---------- Footer (concept 03's layout, 02.2's night navy), straight after the navy invitation ---------- */
+.foot { background: var(--navy-night); color: var(--white); padding: clamp(4rem, 8vw, 6.5rem) max(var(--pad), calc((100% - 1240px) / 2)) 2rem; font-size: .9375rem; }
+.foot .lockup { color: var(--white); }
+.foot__inner { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem clamp(2rem, 6vw, 6rem); }
+.foot__brand { display: grid; gap: 1.75rem; align-content: start; }
+.foot__brand p, .foot__const > p { color: rgb(255 255 255 / .7); max-width: 44ch; }
+.foot__const h2 { margin-top: 2rem; font-size: .8125rem; font-family: var(--font-body); font-weight: 500; color: rgb(255 255 255 / .6); }
+.foot__const ul { margin-top: .75rem; display: grid; gap: .25rem; }
+.foot__const a { display: flex; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; margin-inline: -1rem; border-radius: 12px; text-decoration: none; font-family: var(--font-heading); font-size: 1.1875rem; transition: background-color .25s var(--ease); }
+.foot__const a:hover { background: rgb(255 255 255 / .07); }
+.foot__const small { font-family: var(--font-body); font-size: .8125rem; color: rgb(255 255 255 / .55); align-self: center; }
+.foot__legal { margin-top: clamp(4rem, 8vw, 6rem); padding-top: 1.5rem; border-top: 1px solid rgb(255 255 255 / .16); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; font-size: .75rem; color: rgb(255 255 255 / .6); }
+.foot__legal nav { display: flex; flex-wrap: wrap; gap: .25rem 1.5rem; }
+.foot__legal a { color: var(--white); text-decoration: none; }
+.foot__legal a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.foot :focus-visible { outline-color: var(--white); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1023px) {
+  .hero { grid-template-columns: 1fr; height: auto; }
+  .hero__text { gap: 2rem; padding: clamp(2.5rem, 7svh, 4rem) var(--pad) 2rem; }
+  .hero__body { padding-bottom: 0; }
+  .hero__title { font-size: clamp(2.75rem, 1rem + 7vw, 4.75rem); }
+  .hero__art { aspect-ratio: 4 / 5; height: auto; max-height: 85svh; }
+  .read { margin-left: 0; }
+  .row { grid-template-columns: 1fr; }
+  .row__main { grid-column: 1; padding: 0 var(--pad); max-width: 44rem; margin-inline: auto; width: 100%; }
+  .pan { height: auto; }
+  .pan__stage { position: static; height: auto; grid-template-columns: 1fr; padding-block: 5rem; }
+  .pan__text { border-right: 0; padding: 0 var(--pad) 2.5rem; }
+  .pan__stage { grid-template-columns: 1fr; }
+  .pan__track { overflow-x: auto; scroll-snap-type: x mandatory; padding: 0 var(--pad); transform: none; }
+  .pan__track .plate { height: 56svh; scroll-snap-align: start; }
+  .pan__full { display: none; }
+}
+@media (max-width: 767px) {
+  .evo { aspect-ratio: 4 / 3; }
+  .evo__cap { flex-direction: column; align-items: flex-start; }
+  :root { --top-h: 68px; }
+  .lockup { --h: 34px; }
+  .top__cta { display: none; }
+  .hero__actions .btn { flex: 1 1 100%; }
+  .t-line > span { white-space: normal; }
+  .foot__inner { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  .js .t-line > span { transform: none; }
+  .js .fade-in, .js .reveal { opacity: 1; transform: none; }
+  .js .hero__art { clip-path: none; }
+  .js [data-words] .w { opacity: 1; }
+}
+
+/* The Project, hung like a gallery wall (after 05.5's Movement): heading across the full width, a tall crop of the shelves on the
+   left with its caption, and the text set lower on the right so it ends level with the picture */
+.hang { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: clamp(3rem, 8vw, 9rem); row-gap: 0; padding-inline: var(--pad); max-width: calc(1240px + 2 * var(--pad)); width: 100%; margin-inline: auto; box-sizing: border-box; }
+.hang__head { grid-column: 1 / -1; display: grid; gap: 1.5rem; justify-items: start; margin-bottom: clamp(3.5rem, 8vw, 7rem); }
+.hang__img { aspect-ratio: 2 / 3; overflow: hidden; background: #ebe9e4; }
+.hang__img img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; transform: scale(calc(1.12 - var(--sp, 0) * .12)); }
+.hang__text { align-self: end; display: grid; gap: clamp(2.5rem, 5vw, 3.5rem); max-width: 34rem; }
+.hang__def { display: grid; gap: 1.1rem; justify-items: start; padding-top: 1.75rem; border-top: 1px solid var(--rule); }
+.hang__def h3 { font-size: clamp(1.375rem, 1.1rem + .7vw, 1.75rem); line-height: 1.1; letter-spacing: -.015em; }
+.hang__def .define__lead { font-size: clamp(1.0625rem, 1rem + .25vw, 1.1875rem); }
+.hang__def p:not(.define__lead) { color: #4a4a4a; font-size: .9375rem; }
+.hang__def .link { margin-top: .5rem; }
+@media (max-width: 1023px) {
+  .hang { grid-template-columns: 1fr; row-gap: 3rem; max-width: 44rem; }
+  .hang__head { margin-bottom: 0; }
+  .hang__img { aspect-ratio: 4 / 3; }
+  .hang__text { padding-bottom: 0; }
+}
+/* The Project fits on one screen at desktop: tighter spacing, the picture no taller than the text beside it */
+@media (min-width: 1024px) {
+  .hang { padding-block: clamp(3.5rem, 1rem + 4vw, 5.5rem); }
+  .hang__head { gap: 1rem; margin-bottom: clamp(2rem, 3.5vw, 3rem); }
+  .hang__head .h2 { margin-bottom: 0; }
+  .hang__img { aspect-ratio: auto; height: 100%; }
+  .hang__plate { display: grid; }
+  .hang__text { gap: 2rem; }
+  .hang__def { gap: .85rem; padding-top: 1.5rem; }
+}

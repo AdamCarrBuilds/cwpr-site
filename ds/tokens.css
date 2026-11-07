@@ -1,0 +1,86 @@
+/* Center for World Philosophy and Religion: design tokens
+   Chosen 2026-11-03: logo A1 · palette B · Scholarly Serif type · light mode.
+   Spec and usage rules: DESIGN-SYSTEM.md. Import after a CSS reset (modern-normalize) and before other styles.
+   Fonts: https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap */
+
+:root {
+  /* ---- Brand colours (named) ---- */
+  --navy: #3d5a80;        /* primary: buttons, links, focus, illustration field */
+  --navy-tone: #647b99;   /* navy mixed 20% toward white: tonal-crop illustration only */
+  --coral: #ee6c4d;       /* secondary: small highlights only, never body text */
+  --mint: #e0f2f1;        /* accent: hover and selected backgrounds, soft panels */
+  --paper: #fcfcf9;       /* page background */
+  --ink: #2c2c2c;         /* text and default logo colour */
+  --white: #ffffff;
+
+  /* ---- UI roles (shadcn-style names, light mode) ---- */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --primary: var(--navy);
+  --primary-foreground: var(--white);
+  --secondary: var(--coral);
+  --secondary-foreground: var(--ink);   /* ink on coral = 4.6:1; white on coral fails */
+  --accent: var(--mint);
+  --accent-foreground: var(--ink);
+  --muted: #f0f1f3;
+  --muted-foreground: #666666;
+  --card: var(--white);
+  --card-foreground: var(--ink);
+  --border: #e2e2e2;
+  --input: #e2e2e2;
+  --ring: var(--navy);
+  --destructive: #c94c4c;
+
+  /* ---- Typography ---- */
+  --font-heading: 'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --weight-heading: 500;
+  --weight-body: 400;
+  --weight-strong: 600;
+
+  /* Type scale (fluid between 375px and 1280px viewports) */
+  --text-display: clamp(2.75rem, 1.6rem + 4.9vw, 5rem);    /* 44 → 80px, hero headline */
+  --text-h1: clamp(2.25rem, 1.6rem + 2.8vw, 3.5rem);       /* 36 → 56px */
+  --text-h2: clamp(1.75rem, 1.4rem + 1.5vw, 2.5rem);       /* 28 → 40px */
+  --text-h3: clamp(1.375rem, 1.2rem + .7vw, 1.75rem);      /* 22 → 28px */
+  --text-h4: 1.25rem;                                      /* 20px */
+  --text-lead: clamp(1.125rem, 1.05rem + .3vw, 1.3125rem); /* 18 → 21px */
+  --text-body: 1rem;                                       /* 16px */
+  --text-small: .875rem;                                   /* 14px */
+  --text-eyebrow: .75rem;                                  /* 12px, uppercase, tracked */
+  --leading-tight: 1.05;
+  --leading-heading: 1.15;
+  --leading-body: 1.6;
+  --tracking-display: -.015em;
+  --tracking-eyebrow: .16em;
+
+  /* ---- Space, layout, shape ---- */
+  --space-1: .25rem;  --space-2: .5rem;  --space-3: .75rem; --space-4: 1rem;
+  --space-5: 1.5rem;  --space-6: 2rem;   --space-7: 3rem;   --space-8: 4rem;
+  --space-9: 6rem;    --space-10: 8rem;
+  --section-y: clamp(4rem, 2.5rem + 6vw, 8rem);           /* vertical padding per section */
+  --gutter: clamp(1rem, .5rem + 2.5vw, 2.5rem);           /* page side padding */
+  --container: 1240px;
+  --measure: 65ch;                                        /* max line length for prose */
+  --radius: .5rem;
+  --radius-sm: .25rem;
+  --radius-pill: 999px;
+  --hairline: 1px solid var(--border);
+  --shadow-card: 0 1px 2px rgba(44, 44, 44, .04), 0 8px 24px rgba(44, 44, 44, .06);
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(.2, .7, .2, 1);
+  --dur-fast: 150ms;
+  --dur-base: 300ms;
+}
+
+/* Optional dark theme from palette B. The chosen brand is LIGHT; use this only if dark mode is requested. */
+[data-theme='dark'] {
+  --background: #1a1b1e; --foreground: #dcdcdc;
+  --primary: #91a7ff; --primary-foreground: #1a1b1e;
+  --secondary: #ffa8a8; --secondary-foreground: #1a1b1e;
+  --accent: #373a40; --accent-foreground: #dcdcdc;
+  --muted: #2c2e33; --muted-foreground: #909296;
+  --card: #25262b; --card-foreground: #dcdcdc;
+  --border: #373a40; --input: #373a40; --ring: #91a7ff; --destructive: #f03e3e;
+}
