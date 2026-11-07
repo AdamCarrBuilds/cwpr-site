@@ -4,14 +4,14 @@ The one-page site for the Center for World Philosophy and Religion: hero, the qu
 
 **Why:** it grew out of a set of design concepts; this repo holds the chosen one (concept 05.4) so anyone can edit it and see the change live.
 
-Built by Adam Carr with Claude, November 2026. Owned by Adam Carr (GitHub `AddyCarr`), shared with Edward.
+Built by Adam Carr with Claude, November 2026. Owned by Adam Carr (GitHub `AdamCarrBuilds`), shared with Edward.
 
 ## Status
 
 | Part | State |
 |---|---|
 | Site | ✅ Live at https://cwpr-site.vercel.app |
-| Auto-deploy | ✅ Every push to `main` publishes to that address within about a minute |
+| Auto-deploy | ⏳ Waiting on the Vercel GitHub app being given access to this repo; until then Adam publishes with `npx vercel deploy --prod` |
 | Real links (`/vision/...`, `/ideas/...`) | ⏳ Point to pages that do not exist yet |
 
 ## How it works
@@ -45,7 +45,7 @@ edit files ──> git push to main ──> Vercel builds (just copies the files
 
 | System | Access | Managed where |
 |---|---|---|
-| GitHub `AddyCarr/cwpr-site` | Public to read; pushing needs collaborator access from Adam | github.com repo Settings → Collaborators |
+| GitHub `AdamCarrBuilds/cwpr-site` | Public to read; pushing needs collaborator access from Adam | github.com repo Settings → Collaborators |
 | Vercel project `cwpr-site` | Adam's Vercel account (`addycarr`, hobby plan) | vercel.com dashboard |
 | Google Fonts, unpkg (Lenis), jsDelivr (GSAP) | Public, no keys | Linked from `index.html` / `logo-motion.js` |
 
